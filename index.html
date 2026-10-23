@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BioBarato</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #f7f7f7;
+    color: #111;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: #fff;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    font-size: 20px;
+    font-weight: 700;
+    color: #111;
+    flex-shrink: 0;
+  }
+  .logo em { color: #2e7d4f; font-style: normal; }
+
+  .search {
+    flex: 1;
+    max-width: 400px;
+    padding: 9px 14px;
+    border: 1.5px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    outline: none;
+    background: #fafafa;
+    color: #111;
+  }
+  .search:focus { border-color: #2e7d4f; background: #fff; }
+
+  /* ── TABS ── */
+  .tabs {
+    background: #fff;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    padding: 0 24px;
+    gap: 4px;
+    position: sticky;
+    top: 57px;
+    z-index: 90;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+
+  .tab {
+    padding: 14px 16px;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -1px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: #777;
+    cursor: pointer;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color .15s;
+  }
+  .tab:hover { color: #111; }
+  .tab.active { color: #111; font-weight: 600; border-bottom-color: #111; }
+
+  .dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ── MAIN ── */
+  .main {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 28px 20px 80px;
+  }
+
+  .count {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 20px;
+  }
+
+  /* ── GRID ── */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 16px;
+  }
+
+  /* ── CARD ── */
+  .card {
+    background: #fff;
+    border: 1px solid #e4e4e4;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-img {
+    aspect-ratio: 1 / 1;
+    background: #f2f2f2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card-img img { width: 100%; height: 100%; object-fit: cover; }
+
+  .badge-off {
+    position: absolute;
+    top: 10px; left: 10px;
+    background: #d32f2f;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 6px;
+  }
+  .badge-tag {
+    position: absolute;
+    top: 10px; right: 10px;
+    background: #333;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 6px;
+  }
+
+  .card-body {
+    padding: 16px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .card-platform {
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .card-name {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.45;
+    color: #111;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-prices {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-top: 2px;
+  }
+  .price-now { font-size: 22px; font-weight: 700; color: #111; }
+  .price-was { font-size: 13px; color: #aaa; text-decoration: line-through; }
+
+  .card-btn {
+    display: block;
+    text-align: center;
+    padding: 11px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    text-decoration: none;
+    margin-top: auto;
+  }
+  .card-btn.shopee { background: #ee4d2d; }
+  .card-btn.ml     { background: #3483fa; }
+
+  /* ── EMPTY ── */
+  .empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 80px 0;
+    color: #aaa;
+    font-size: 15px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 24px;
+    color: #bbb;
+    font-size: 12px;
+    line-height: 2;
+  }
+
+  /* ── DARK MODE ── */
+  @media (prefers-color-scheme: dark) {
+    body { background: #151515; color: #eee; }
+    .header, .tabs { background: #1e1e1e; border-color: #2e2e2e; }
+    .logo { color: #eee; }
+    .search { background: #2a2a2a; border-color: #3a3a3a; color: #eee; }
+    .search:focus { border-color: #2e7d4f; background: #2a2a2a; }
+    .tab { color: #666; }
+    .tab:hover, .tab.active { color: #eee; }
+    .card { background: #1e1e1e; border-color: #2e2e2e; }
+    .card-img { background: #2a2a2a; }
+    .card-name { color: #eee; }
+    .price-now { color: #eee; }
+    .price-was { color: #666; }
+    .badge-tag { background: #444; }
+  }
+
+  @media (max-width: 480px) {
+    .header { padding: 12px 16px; }
+    .tabs { padding: 0 16px; top: 53px; }
+    .main { padding: 20px 12px 60px; }
+    .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .card-body { padding: 12px; gap: 6px; }
+    .card-name { font-size: 13px; }
+    .price-now { font-size: 18px; }
+    .card-btn { font-size: 13px; padding: 9px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">Bio<em>Barato</em></div>
+  <input class="search" type="text" id="searchInput" placeholder="Buscar produto…">
+</div>
+
+<div class="tabs" id="tabs"></div>
+
+<main class="main">
+  <p class="count" id="count"></p>
+  <div class="grid" id="grid"></div>
+</main>
+
+<footer>
+  🌿 BioBarato &nbsp;·&nbsp; Links de afiliados. Ao comprar você apoia este site sem custo extra.
+</footer>
+
+<script>
+/* ================================================================
+   ✏️  PLATAFORMAS
+================================================================ */
+const PLATFORMS = {
+  shopee: { label: "Shopee",        color: "#EE4D2D", btn: "Ver na Shopee"        },
+  ml:     { label: "Mercado Livre", color: "#3483FA", btn: "Ver no Mercado Livre" },
+};
+
+
+
+let tab = "all", q = "";
+
+function buildTabs() {
+  const tabs = [{ id: "all", label: "Todos", color: "#555" }, ...Object.entries(PLATFORMS).map(([id, p]) => ({ id, label: p.label, color: p.color }))];
+  document.getElementById("tabs").innerHTML = tabs.map((t, i) =>
+    `<button class="tab${i === 0 ? " active" : ""}" onclick="setTab('${t.id}', this)">
+      <span class="dot" style="background:${t.color}"></span>${t.label}
+    </button>`
+  ).join("");
+}
+
+function setTab(id, el) {
+  tab = id;
+  document.querySelectorAll(".tab").forEach(b => b.classList.remove("active"));
+  el.classList.add("active");
+  render();
+}
+
+function render() {
+  const list = PRODUCTS.filter(p =>
+    (tab === "all" || p.platform === tab) &&
+    (!q || p.name.toLowerCase().includes(q))
+  );
+
+  document.getElementById("count").textContent =
+    list.length + (list.length === 1 ? " produto" : " produtos");
+
+  if (!list.length) {
+    document.getElementById("grid").innerHTML = `<div class="empty">Nenhum produto encontrado.</div>`;
+    return;
+  }
+
+  document.getElementById("grid").innerHTML = list.map(p => {
+    const pf = PLATFORMS[p.platform] || PLATFORMS.shopee;
+    const img = p.image ? `<img src="${p.image}" alt="${p.name}" loading="lazy">` : p.emoji;
+    return `
+      <div class="card">
+        <div class="card-img">
+          ${img}
+          ${p.discount ? `<span class="badge-off">${p.discount}</span>` : ""}
+          ${p.tag      ? `<span class="badge-tag">${p.tag}</span>`      : ""}
+        </div>
+        <div class="card-body">
+          <div class="card-platform">
+            <span class="dot" style="background:${pf.color}"></span>
+            <span style="color:${pf.color}">${pf.label}</span>
+          </div>
+          <div class="card-name">${p.name}</div>
+          <div class="card-prices">
+            <span class="price-now">${p.price}</span>
+            ${p.priceWas ? `<span class="price-was">${p.priceWas}</span>` : ""}
+          </div>
+          <a class="card-btn ${p.platform}" href="${p.link}" target="_blank" rel="noopener noreferrer">
+            ${pf.btn}
+          </a>
+        </div>
+      </div>`;
+  }).join("");
+}
+
+document.getElementById("searchInput").addEventListener("input", function () {
+  q = this.value.toLowerCase();
+  render();
+});
+
+buildTabs();
+render();
+</script>
+</body>
+</html>
